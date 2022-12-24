@@ -2,31 +2,21 @@ import { Header } from "../../Components/Header";
 import { SearchForm } from "./SearchForm";
 import { CardTask, ListTasks, TasksContainer } from "./styles";
 import emptyListImg from "../../assets/clipboard.png";
-import { useState } from "react";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import { Check } from "phosphor-react";
-
-type TasksProps = {
-    id: string;
-    description: string;
-    status: "checked" | "unchecked";
-};
+import { Check, Trash } from "phosphor-react";
+import { useTheme } from "styled-components";
+import { useTasks } from "../../contexts/TasksContext";
 
 export const Tasks = () => {
-    const [tasks, setTasks] = useState<TasksProps[]>([
-        {
-            id: crypto.randomUUID(),
-            description:
-                "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-            status: "unchecked",
-        },
-        {
-            id: crypto.randomUUID(),
-            description:
-                "Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.",
-            status: "checked",
-        },
-    ]);
+    const theme = useTheme();
+
+    const {
+        createdTaskQuantity,
+        deleteTask,
+        finishedTasks,
+        toggleTask,
+        tasks,
+    } = useTasks();
 
     return (
         <>
@@ -39,17 +29,21 @@ export const Tasks = () => {
                     <header>
                         <div>
                             <strong>Tarefas criadas</strong>
-                            <span className="counter">{0}</span>
+                            <span className="counter">
+                                {createdTaskQuantity}
+                            </span>
                         </div>
 
                         <div>
                             <strong>Concluídas</strong>
-                            <span className="counter">{0}</span>
+                            <span className="counter">
+                                {finishedTasks} de {createdTaskQuantity}
+                            </span>
                         </div>
                     </header>
 
                     <main>
-                        {!tasks.length ? (
+                        {tasks && !tasks.length ? (
                             <div className="empty-list">
                                 <div>
                                     <img src={emptyListImg} alt="" />
@@ -66,28 +60,38 @@ export const Tasks = () => {
                                 </div>
                             </div>
                         ) : (
+                            tasks &&
                             tasks.map((task) => (
-                                <CardTask key={task.id}>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
+                                <CardTask key={task.id} status={task.status}>
+                                    <div>
                                         <Checkbox.Root
                                             className="CheckboxRoot"
-                                            defaultChecked
-                                            id="c1"
+                                            onClick={() => toggleTask(task.id)}
+                                            id={task.id}
                                         >
                                             <Checkbox.Indicator className="CheckboxIndicator">
                                                 <Check size={22} />
                                             </Checkbox.Indicator>
                                         </Checkbox.Root>
 
-                                        <label className="Label" htmlFor="c1">
-                                            Accept terms and conditions.
+                                        <label
+                                            className="Label"
+                                            htmlFor={task.id}
+                                        >
+                                            {task.description}
                                         </label>
                                     </div>
+
+                                    <button
+                                        className="delete-task"
+                                        type="button"
+                                        onClick={() => deleteTask(task.id)}
+                                    >
+                                        <Trash
+                                            size={22}
+                                            color={theme["gray-300"]}
+                                        />
+                                    </button>
                                 </CardTask>
                             ))
                         )}

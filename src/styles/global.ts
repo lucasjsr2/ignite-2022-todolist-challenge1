@@ -30,5 +30,6 @@ export const GlobalStyle = createGlobalStyle`
     button {
         border: 0;
         cursor: pointer;
+        background: none;
     }
 `;

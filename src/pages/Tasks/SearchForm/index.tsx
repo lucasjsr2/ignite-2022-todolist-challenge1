@@ -1,12 +1,34 @@
 import { PlusCircle } from "phosphor-react";
+import { FormEvent, useState } from "react";
+import { useTasks } from "../../../contexts/TasksContext";
 import { SearchFormContainer } from "./styles";
 
 export const SearchForm = () => {
-    return (
-        <SearchFormContainer>
-            <input type="text" placeholder="Busque uma tarefa" />
+    const { createTask } = useTasks();
+    const [taskDescription, setTaskDescription] = useState("");
 
-            <button type="submit">
+    const handleCreateTask = (e: FormEvent) => {
+        e.preventDefault();
+
+        createTask({
+            id: crypto.randomUUID(),
+            description: taskDescription,
+            status: "unchecked",
+        });
+
+        setTaskDescription("");
+    };
+
+    return (
+        <SearchFormContainer onSubmit={(e) => handleCreateTask(e)}>
+            <input
+                type="text"
+                placeholder="Busque uma tarefa"
+                onChange={(e) => setTaskDescription(e.currentTarget.value)}
+                value={taskDescription}
+            />
+
+            <button type="submit" disabled={!taskDescription}>
                 Criar
                 <PlusCircle size={24} />
             </button>

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const TasksContainer = styled.main`
     width: 100%;
@@ -12,6 +12,8 @@ export const ListTasks = styled.section`
     display: flex;
     flex-direction: column;
     margin-top: 4rem;
+    margin-bottom: 2rem;
+    display: inline-block;
 
     header {
         width: 100%;
@@ -77,41 +79,84 @@ export const ListTasks = styled.section`
     }
 `;
 
-export const CardTask = styled.div`
+type CardTaskProps = {
+    status: "checked" | "unchecked";
+};
+
+export const CardTask = styled.div<CardTaskProps>`
     display: flex;
-    justify-content: space-between;
     align-items: center;
     background: ${({ theme }) => theme["gray-500"]};
+    gap: 48px;
     border-radius: 8px;
     margin-top: 1.5rem;
     padding: 1rem;
     border: 1px solid ${({ theme }) => theme["gray-400"]};
 
+    div {
+        display: flex;
+        flex: 1;
+    }
+
     .CheckboxRoot {
         background-color: transparent;
         width: 25px;
+        min-width: 25px;
         height: 25px;
+        min-height: 25px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         box-shadow: 0 0 0 2px ${({ theme }) => theme.blue};
+        margin-top: 4px;
 
-        &[data-state="unchecked"] {
-            border: 3px solid red;
+        &[data-state="checked"] {
+            background: ${({ theme }) => theme["purple-dark"]};
+            box-shadow: 0 0 0 2px ${({ theme }) => theme["purple-dark"]};
+
+            &:hover {
+                transition: all 0.2s ease-in-out;
+                background: ${({ theme }) => theme.purple};
+                box-shadow: 0 0 0 2px ${({ theme }) => theme.purple};
+            }
+        }
+
+        &[data-state="unchecked"]:hover {
+            transition: all 0.2s ease-in-out;
+            background: rgba(30, 111, 159, 0.2);
+        }
+
+        .CheckboxIndicator {
+            color: ${({ theme }) => theme["gray-100"]};
+            line-height: 0;
         }
     }
 
-    .CheckboxIndicator {
+    .Label {
+        font-size: 0.875rem;
         color: ${({ theme }) => theme["gray-100"]};
+        margin-left: 12px;
+
+        ${({ status }) =>
+            status === "checked" &&
+            css`
+                text-decoration: line-through;
+                color: ${({ theme }) => theme["gray-300"]};
+            `}
     }
 
-    .Label {
-        color: white;
-        padding-left: 15px;
-        font-size: 0.875rem;
-        line-height: 1;
-        user-select: none;
-        color: ${({ theme }) => theme["gray-200"]};
+    button.delete-task {
+        align-self: flex-start;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        border-radius: 4px;
+
+        &:hover {
+            transition: background 0.2s ease-in-out;
+            background: ${({ theme }) => theme["gray-700"]};
+        }
     }
 `;
