@@ -28,7 +28,7 @@
 
 ## 💻 Sobre o projeto
 
-Todo App foi criado para resolução do desafio do curso Ignite (2022) da Rocketseat.
+Todo List foi criado para resolução do desafio do curso Ignite (2022) da Rocketseat.
 
 ## 🎨 Layout
 <p align="center">
