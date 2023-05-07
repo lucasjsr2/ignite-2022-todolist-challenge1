@@ -23,7 +23,7 @@ export const SearchForm = () => {
         <SearchFormContainer onSubmit={(e) => handleCreateTask(e)}>
             <input
                 type="text"
-                placeholder="Busque uma tarefa"
+                placeholder="Adicione uma tarefa"
                 onChange={(e) => setTaskDescription(e.currentTarget.value)}
                 value={taskDescription}
             />

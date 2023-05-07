@@ -95,6 +95,7 @@ export const CardTask = styled.div<CardTaskProps>`
 
     div {
         display: flex;
+        align-items: center;
         flex: 1;
     }
 
@@ -109,7 +110,6 @@ export const CardTask = styled.div<CardTaskProps>`
         align-items: center;
         justify-content: center;
         box-shadow: 0 0 0 2px ${({ theme }) => theme.blue};
-        margin-top: 4px;
 
         &[data-state="checked"] {
             background: ${({ theme }) => theme["purple-dark"]};
